@@ -12,6 +12,95 @@ hide:
 ---
 
 # Release Notes
+## 0.5.28
+
+### What's Changed
+
+There were a lot of time since [**0.5.7 OpenTelemetry** release](https://github.com/airtai/faststream/releases/tag/0.5.7) and now we completed **Observability** features we planned! **FastStream** supports **Prometheus** metrics in a native way!
+
+Special thanks to @roma-frolov and @draincoder (again) for it!
+
+To collect **Prometheus** metrics for your **FastStream** application you just need to install special distribution
+
+```cmd
+pip install faststream[prometheus]
+```
+
+And use **PrometheusMiddleware**. Also, it could be helpful to use our [**ASGI**](https://faststream.airt.ai/latest/getting-started/asgi/) to serve metrics endpoint in the same app.
+
+```python
+from prometheus_client import CollectorRegistry, make_asgi_app
+from faststream.asgi import AsgiFastStream
+from faststream.nats import NatsBroker
+from faststream.nats.prometheus import NatsPrometheusMiddleware
+
+registry = CollectorRegistry()
+
+broker = NatsBroker(
+    middlewares=(
+        NatsPrometheusMiddleware(registry=registry),
+    )
+)
+
+app = AsgiFastStream(
+    broker,
+    asgi_routes=[
+        ("/metrics", make_asgi_app(registry)),
+    ]
+)
+```
+
+Moreover, we have a ready-to-use [**Grafana** dashboard](https://grafana.com/grafana/dashboards/22130-faststream-metrics/) you can just import and use!
+
+To find more information about **Prometheus** support, just visit [our documentation](https://faststream.airt.ai/latest/getting-started/prometheus/).
+
+### All changes
+
+* docs: Correct minimum FastAPI version for lifespan handling by @tim-hutchinson in https://github.com/airtai/faststream/pull/1853
+* add aiogram example by @IvanKirpichnikov in https://github.com/airtai/faststream/pull/1858
+* Feature: Prometheus Middleware by @roma-frolov in https://github.com/airtai/faststream/pull/1791
+* Add in-progress tutorial to how-to section by @sheldygg in https://github.com/airtai/faststream/pull/1859
+* docs: Add info about Grafana dashboard by @draincoder in https://github.com/airtai/faststream/pull/1863
+
+### New Contributors
+
+* @tim-hutchinson made their first contribution in https://github.com/airtai/faststream/pull/1853
+
+**Full Changelog**: https://github.com/airtai/faststream/compare/0.5.27...0.5.28
+
+## 0.5.27
+
+### What's Changed
+
+* fix: anyio major version parser by [@dotX12](https://github.com/dotX12){.external-link target="_blank"} in [#1850](https://github.com/airtai/faststream/pull/1850){.external-link target="_blank"}
+
+### New Contributors
+* [@dotX12](https://github.com/dotX12){.external-link target="_blank"} made their first contribution in [#1850](https://github.com/airtai/faststream/pull/1850){.external-link target="_blank"}
+
+**Full Changelog**: [#0.5.26...0.5.27](https://github.com/airtai/faststream/compare/0.5.26...0.5.27){.external-link target="_blank"}
+
+## 0.5.26
+
+### What's Changed
+
+This it the official **Python 3.13** support! Now, **FastStream** works (and tested) at **Python 3.8 - 3.13** versions!
+
+Warning: **Python3.8** is EOF since **3.13** release and we plan to drop it support in **FastStream 0.6.0** version.
+
+Also, current release has little bugfixes related to **CLI** and **AsyncAPI** schema.
+
+* fix: asgi docs by [@Sehat1137](https://github.com/Sehat1137){.external-link target="_blank"} in [#1828](https://github.com/airtai/faststream/pull/1828){.external-link target="_blank"}
+* docs: add link to RU TG community by [@Lancetnik](https://github.com/Lancetnik){.external-link target="_blank"} in [#1831](https://github.com/airtai/faststream/pull/1831){.external-link target="_blank"}
+* docs: add dynaconf NATS HowTo example by [@sheldygg](https://github.com/sheldygg){.external-link target="_blank"} in [#1832](https://github.com/airtai/faststream/pull/1832){.external-link target="_blank"}
+* Fix AsyncAPI 2.6.0 operation label by [@KrySeyt](https://github.com/KrySeyt){.external-link target="_blank"} in [#1835](https://github.com/airtai/faststream/pull/1835){.external-link target="_blank"}
+* fix: correct CLI factory behavior by [@Lancetnik](https://github.com/Lancetnik){.external-link target="_blank"} in [#1838](https://github.com/airtai/faststream/pull/1838){.external-link target="_blank"}
+* Autocommit precommit changes by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#1840](https://github.com/airtai/faststream/pull/1840){.external-link target="_blank"}
+* Add devcontainers supporting all the brokers by [@kumaranvpl](https://github.com/kumaranvpl){.external-link target="_blank"} in [#1839](https://github.com/airtai/faststream/pull/1839){.external-link target="_blank"}
+* Replace async Event with bool by [@Olegt0rr](https://github.com/Olegt0rr){.external-link target="_blank"} in [#1846](https://github.com/airtai/faststream/pull/1846){.external-link target="_blank"}
+* Add support for Python 3.13 by [@davorrunje](https://github.com/davorrunje){.external-link target="_blank"} in [#1845](https://github.com/airtai/faststream/pull/1845){.external-link target="_blank"}
+
+**Full Changelog**: [#0.5.25...0.5.26](https://github.com/airtai/faststream/compare/0.5.25...0.5.26){.external-link target="_blank"}
+
 ## 0.5.25
 
 ### What's Changed
